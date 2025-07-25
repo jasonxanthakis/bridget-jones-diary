@@ -15,7 +15,7 @@ class Entry {
     const response = await db.query("SELECT * FROM entries ORDER BY created_at DESC;");
 
     if (response.rows.length === 0) {
-      throw new Error("No entries found.")
+      throw new Error("No entries found.");
     }
 
     return response.rows.map(g => new Entry(g));
@@ -25,17 +25,17 @@ class Entry {
     const response = await db.query("SELECT * FROM entries WHERE id = $1;", [id]);
 
     if (response.rows.length != 1) {
-      throw new Error("Unable to locate diary entry.")
+      throw new Error("Unable to locate diary entry.");
     }
 
     return new Entry(response.rows[0]);
   }
 
   static async getAllByCategory(category) {
-    const response = await db.query("SELECT * FROM entries WHERE category = $1", [category]);
+    const response = await db.query("SELECT * FROM entries WHERE LOWER(category) = $1", [category]);
 
     if (response.rows.length != 1) {
-      throw new Error("No entries found.")
+      throw new Error("No entries found.");
     }
 
     return response.rows.map(g => new Entry(g));
@@ -43,6 +43,7 @@ class Entry {
 
   static async create(data) {
     const { title, content, category, createdAt, lastEditedAt  } = data;
+
     const response = await db.query('INSERT INTO entries (title, content, category, created_at, last_edited_at) VALUES ($1, $2, $3, $4, $5) RETURNING *;',
     [title, content, category, createdAt, lastEditedAt]);
 
@@ -56,7 +57,7 @@ class Entry {
     [data.content, this.id]);
 
     if (response.rows.length != 1) {
-      throw new Error("Unable to update entry.")
+      throw new Error("Unable to update entry.");
     }
 
     return new Entry(response.rows[0]);
@@ -66,7 +67,7 @@ class Entry {
     const response = await db.query('DELETE FROM entries WHERE id = $1 RETURNING *;', [id]);
 
     if (response.rows.length != 1) {
-      throw new Error("Unable to delete entry.")
+      throw new Error("Unable to delete entry.");
     }
 
     return new Entry(response.rows[0]);

@@ -21,7 +21,7 @@ async function show(req, res) {
 
 async function categories(req, res) {
   try {
-    const category = req.params.category;
+    const category = req.params.category.toLowerCase();
     const entries = await Entry.getAllByCategory(category);
     res.status(200).json(entries)
   } catch (err) {
