@@ -32,9 +32,19 @@ class Entry {
   }
 
   static async getAllByCategory(category) {
-    const response = await db.query("SELECT * FROM entries WHERE LOWER(category) = $1", [category]);
+    const response = await db.query("SELECT * FROM entries WHERE LOWER(category) = $1 ORDER BY created_at DESC;", [category]);
 
-    if (response.rows.length != 1) {
+    if (response.rows.length === 1) {
+      throw new Error("No entries found.");
+    }
+
+    return response.rows.map(g => new Entry(g));
+  }
+
+  static async getAllByDate(date) {
+    const response = await db.query("SELECT * FROM entries WHERE CAST(created_at AS VARCHAR) LIKE $1 ORDER BY created_at DESC;", [date+'%']);
+
+    if (response.rows.length === 1) {
       throw new Error("No entries found.");
     }
 

@@ -29,6 +29,16 @@ async function categories(req, res) {
   }
 }
 
+async function dates(req, res) {
+  try {
+    const date = req.params.date;
+    const entries = await Entry.getAllByDate(date);
+    res.status(200).json(entries)
+  } catch (err) {
+    res.status(404).json({ "error": err.message })
+  }
+}
+
 async function create(req, res) {
   try {
     const entry = await Entry.create(req.body);
@@ -61,4 +71,4 @@ async function destroy(req, res) {
 }
 
 
-module.exports = { index, show, categories, create, update, destroy }
+module.exports = { index, show, categories, dates, create, update, destroy }
