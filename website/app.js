@@ -1,11 +1,12 @@
 let API_URL = 'http://localhost:3000/entries/';
 
+let mode = '';
+document.getElementById('title-outlined').click();
+
 let lastSearch = '';
 document.getElementById('submitSearch').click();
 
-// const element = document.querySelector('[data-id="1"]');
-// const id = element.getAttribute('data-id');
-// console.log("Entry ID is:", id);
+function changeMode(input) {mode = input;};
 
 function renderEntries(entries) {
     const container = document.getElementById('entry-list');
@@ -38,10 +39,14 @@ document.getElementById('submitSearch').addEventListener("click", async (e) => {
     let data = '';
 
     if (query.length === 0) {
+        if (mode === 'category') {
+            console.log('unfinished component');
+        }
+
         data = await getAll(API_URL);
     } else {
         let URL = 'http://localhost:3000/entries/title/';
-        data = await getAllByTitle(URL, query);
+        data = await getAllByTitle(API_URL, query);
     }
 
     console.log(data);
@@ -85,7 +90,7 @@ async function getAll (URL) {
     return respBody;
 };
 
-async function getAllByTitle (URL, title) {
+async function getAllByTitle (URL, query) {
     const options = {
         method: "GET",
         headers: {
@@ -93,7 +98,7 @@ async function getAllByTitle (URL, title) {
         }
     }
 
-    URL = URL + title;
+    URL = URL + mode + query;
 
     const resp = await fetch(URL, options);
     const respBody = await resp.json();
