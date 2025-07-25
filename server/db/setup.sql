@@ -5,7 +5,7 @@
 DROP TABLE IF EXISTS entries;
 
 CREATE TABLE entries (
-    entry_id INT GENERATED ALWAYS AS IDENTITY,
+    id INT GENERATED ALWAYS AS IDENTITY,
     title VARCHAR(30) NOT NULL,
     content VARCHAR(500),
     category VARCHAR(30) DEFAULT 'Other',

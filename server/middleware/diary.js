@@ -4,11 +4,11 @@ const diaryController = require('../controllers/diary.js');
 
 const diaryRouter = Router();
 
-diaryRouter.get('/', diaryController);
-diaryRouter.get('/:id', diaryController);
+diaryRouter.get('/', diaryController.index);
+diaryRouter.get('/:id', diaryController.show);
 diaryRouter.get('/search', diaryController);
-diaryRouter.post('/', diaryController);
-diaryRouter.patch('/:id', diaryController);
-diaryRouter.delete('/:id', diaryController);
+diaryRouter.post('/', diaryController.create);
+diaryRouter.patch('/:id', diaryController.update);
+diaryRouter.delete('/:id', diaryController.destroy);
 
 module.exports = diaryRouter;
