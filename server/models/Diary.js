@@ -32,7 +32,7 @@ class Entry {
   }
 
   static async getAllByTitle(title) {
-    const response = await db.query("SELECT * FROM entries WHERE LOWER(title) = $1 ORDER BY created_at DESC;", [title]);
+    const response = await db.query("SELECT * FROM entries WHERE LOWER(title) LIKE $1 ORDER BY created_at DESC;", [title+'%']);
 
     if (response.rows.length === 0) {
       throw new Error("No entries found.");
@@ -42,7 +42,7 @@ class Entry {
   }
 
   static async getAllByCategory(category) {
-    const response = await db.query("SELECT * FROM entries WHERE LOWER(category) = $1 ORDER BY created_at DESC;", [category]);
+    const response = await db.query("SELECT * FROM entries WHERE LOWER(category) LIKE $1 ORDER BY created_at DESC;", [category+'%']);
 
     if (response.rows.length === 0) {
       throw new Error("No entries found.");

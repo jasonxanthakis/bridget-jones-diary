@@ -1,8 +1,11 @@
 let API_URL = 'http://localhost:3000/entries/';
 
-const element = document.querySelector('[data-id="1"]');
-const id = element.getAttribute('data-id');
-console.log("Entry ID is:", id);
+let lastSearch = '';
+document.getElementById('submitSearch').click();
+
+// const element = document.querySelector('[data-id="1"]');
+// const id = element.getAttribute('data-id');
+// console.log("Entry ID is:", id);
 
 function renderEntries(entries) {
     const container = document.getElementById('entry-list');
@@ -24,26 +27,121 @@ function renderEntries(entries) {
 
         container.appendChild(card);
     });
-}
+};
 
 // Search bar
-document.getElementById('submitSearch').addEventListener("click", async () => {
+document.getElementById('submitSearch').addEventListener("click", async (e) => {
     const query = document.getElementById("search").value.trim();
+    lastSearch = query;
 
     console.log('submitted');
+    let data = '';
+
+    if (query.length === 0) {
+        data = await getAll(API_URL);
+    } else {
+        let URL = 'http://localhost:3000/entries/title/';
+        data = await getAllByTitle(URL, query);
+    }
+
+    console.log(data);
+
+    renderEntries(data);
 });
 
 // Create new entry
 document.getElementById('create').addEventListener("click", async (e) => {
     console.log('create');
+    const data = await sendPostRequest({title: "Entry 3", content: "...", category: "Other", createdAt: "2025-07-20", lastEditedAt: "2025-07-20"});
+    console.log(data);
 });
 
-// Edit old entry
-document.querySelector('.btn-outline-primary').addEventListener("click", async (e) => {});
+async function sendPostRequest (data) {
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
 
-// Delete old entry
-document.querySelector('.btn-outline-danger').addEventListener("click", async (e) => {
+    const resp = await fetch(API_URL, options);
+    const respBody = await resp.json();
 
-});
+    return respBody;
+};
 
-function createPostElement (data) {}
+async function getAll (URL) {
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+
+    const resp = await fetch(URL);
+    const respBody = await resp.json();
+
+    return respBody;
+};
+
+async function getAllByTitle (URL, title) {
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+
+    URL = URL + title;
+
+    const resp = await fetch(URL, options);
+    const respBody = await resp.json();
+
+    return respBody;
+};
+
+async function editEntry(id) {
+    const data = {content: "insert text here!!!"};
+
+    const options = {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
+
+    const URL = API_URL + id;
+
+    const resp = await fetch(URL, options);
+    const respBody = await resp.json();
+
+    console.log(respBody);
+
+    document.getElementById("search").value = lastSearch;
+    document.getElementById('submitSearch').click();
+
+    return respBody;
+}
+
+async function deleteEntry(id) {
+    const options = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+
+    const URL = API_URL + id;
+
+    const resp = await fetch(URL, options);
+    const respBody = await resp.json();
+
+    console.log(respBody);
+
+    document.getElementById("search").value = lastSearch;
+    document.getElementById('submitSearch').click();
+
+    return respBody;
+};
