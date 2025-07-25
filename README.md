@@ -1,6 +1,6 @@
 # Bridget Jones' Diary
 
-This application provides users with a diary that they can use to write memoirs about their day. It allows users to make entries, edit past entries and delete past entries. Entries are automatically displayed by date. Users can search for past entries by category or date.
+This application provides users with a diary that they can use to write memoirs about their day. It allows users to make entries, edit past entries and delete past entries. Entries are automatically displayed by date. Users can search for past entries by entry title, category or creation date.
 
 ## Getting Started
 

@@ -74,7 +74,7 @@ document.querySelector('.btn-outline-danger').addEventListener("click", async (e
 
 function createPostElement (data) {}
 
-function function sendPostRequest (data) {
+function sendPostRequest (data) {
         const options = {
         method: "POST",
         headers: {

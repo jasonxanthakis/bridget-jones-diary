@@ -33,7 +33,6 @@ class Entry {
 
   static async getAllByTitle(title) {
     const response = await db.query("SELECT * FROM entries WHERE LOWER(title) = $1 ORDER BY created_at DESC;", [title]);
-    console.log(title);
 
     if (response.rows.length === 0) {
       throw new Error("No entries found.");
