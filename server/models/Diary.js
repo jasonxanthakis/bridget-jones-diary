@@ -13,7 +13,7 @@ class Entry {
 
 
    static async getAll() {
-    const response = await db.query("SELECT * FROM entries ORDER BY createdAt DESC;");
+    const response = await db.query("SELECT * FROM entries ORDER BY created_at DESC;");
 
     if (response.rows.length === 0) {
       throw new Error("No entries found.")
@@ -34,7 +34,7 @@ class Entry {
 
     static async create(data) {
         const { title, content, category, createdAt, lastEditedAt  } = data;
-        const response = await db.query('INSERT INTO entries (title, content, category, createdAt, lastEditedAt) VALUES ($1, $2, $3, $4, $5) RETURNING *;',
+        const response = await db.query('INSERT INTO entries (title, content, category, created_at, last_edited_at) VALUES ($1, $2, $3, $4, $5) RETURNING *;',
         [title, content, category, createdAt, lastEditedAt]
     );
         const entryId = response.rows[0].id;
