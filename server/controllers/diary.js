@@ -19,6 +19,16 @@ async function show(req, res) {
   }
 }
 
+async function titles(req, res) {
+  try {
+    const title = req.params.title.toLowerCase();
+    const entries = await Entry.getAllByTitle(title);
+    res.status(200).json(entries)
+  } catch (err) {
+    res.status(404).json({ "error": err.message })
+  }
+}
+
 async function categories(req, res) {
   try {
     const category = req.params.category.toLowerCase();
@@ -71,4 +81,4 @@ async function destroy(req, res) {
 }
 
 
-module.exports = { index, show, categories, dates, create, update, destroy }
+module.exports = { index, show, titles, categories, dates, create, update, destroy }

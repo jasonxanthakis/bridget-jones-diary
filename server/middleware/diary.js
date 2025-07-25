@@ -6,6 +6,7 @@ const diaryRouter = Router();
 
 diaryRouter.get('/', diaryController.index);
 diaryRouter.get('/:id', diaryController.show);
+diaryRouter.get('/title/:title', diaryController.titles);
 diaryRouter.get('/categories/:category', diaryController.categories);
 diaryRouter.get('/date/:date', diaryController.dates);
 diaryRouter.post('/', diaryController.create);
