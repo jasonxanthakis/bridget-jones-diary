@@ -26,26 +26,9 @@ function renderEntries(entries) {
     });
 }
 
-
 // Search bar
 document.getElementById('submitSearch').addEventListener("click", async () => {
     const query = document.getElementById("search").value.trim();
-
-    if (!query) return;
-
-    try {
-        const res = await fetch(`http://localhost:3000/diary`);
-        const entries = await res.json();
-
-        const filtered = entries.filter(entry =>
-            entry.title.toLowerCase().includes(query.toLowerCase()) ||
-            entry.content.toLowerCase().includes(query.toLowerCase())
-        );
-
-        renderEntries(filtered);
-    } catch(err) {
-        console.error("Search failed", err);
-    }
 
     console.log('submitted');
 });
@@ -60,26 +43,7 @@ document.querySelector('.btn-outline-primary').addEventListener("click", async (
 
 // Delete old entry
 document.querySelector('.btn-outline-danger').addEventListener("click", async (e) => {
-    async function deleteEntry(id) {
-        try {
-            await fetch(`http://localhost:3000/diary/${id}`, { method: "DELETE" });
-            const res = await fetch('http://localhost:3000/diary');
-            const updatedEntries = await res.json();
-            renderEntries(updatedEntries);
-    } catch (err) {
-        console.error("Delete failed", err);
-    }
-    }
+
 });
 
 function createPostElement (data) {}
-
-function sendPostRequest (data) {
-        const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    }
-}
