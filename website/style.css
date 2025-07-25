@@ -1,0 +1,38 @@
+h1, p {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.content-container {
+    text-align: left;
+    background-color: white;
+    border: 1px solid rgb(189, 179, 179);
+    border-radius: 15px;
+}
+
+.content-container h3 {
+    color: #007bff;
+}
+
+.search-icon {
+    pointer-events: none;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.btn-no-border {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent important;
+    color: #007bff;
+}
+
+.btn-no-border.delete {
+    color: #dc3545;
+}
