@@ -30,6 +30,22 @@ function renderEntries(entries) {
     });
 };
 
+function renderCategories(categories) {
+    const container = document.getElementById('entry-list');
+    container.innerHTML = '';
+
+    categories.forEach(category => {
+        const card = document.createElement('div');
+        card.className = "content-container p-3 mb-4";
+
+        card.innerHTML = `
+            <p>${category.category}</p>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
 // Search bar
 document.getElementById('submitSearch').addEventListener("click", async (e) => {
     const query = document.getElementById("search").value.trim();
@@ -39,26 +55,25 @@ document.getElementById('submitSearch').addEventListener("click", async (e) => {
     let data = '';
 
     if (query.length === 0) {
-        if (mode === 'category') {
-            console.log('unfinished component');
+        if (mode === 'categories/') {
+            let URL = 'http://localhost:3000/entries/categories/';
+            data = await getAll(URL);
+            renderCategories(data);
+        } else {
+            data = await getAll(API_URL);
+            renderEntries(data);
         }
-
-        data = await getAll(API_URL);
     } else {
-        let URL = 'http://localhost:3000/entries/title/';
         data = await getAllByTitle(API_URL, query);
+        renderEntries(data);
     }
 
-    console.log(data);
-
-    renderEntries(data);
 });
 
 // Create new entry
 document.getElementById('create').addEventListener("click", async (e) => {
     console.log('create');
     const data = await sendPostRequest({title: "Entry 3", content: "...", category: "Other", createdAt: "2025-07-20", lastEditedAt: "2025-07-20"});
-    console.log(data);
 });
 
 async function sendPostRequest (data) {
@@ -84,7 +99,7 @@ async function getAll (URL) {
         }
     }
 
-    const resp = await fetch(URL);
+    const resp = await fetch(URL, options);
     const respBody = await resp.json();
 
     return respBody;
@@ -122,8 +137,6 @@ async function editEntry(id) {
     const resp = await fetch(URL, options);
     const respBody = await resp.json();
 
-    console.log(respBody);
-
     document.getElementById("search").value = lastSearch;
     document.getElementById('submitSearch').click();
 
@@ -142,8 +155,6 @@ async function deleteEntry(id) {
 
     const resp = await fetch(URL, options);
     const respBody = await resp.json();
-
-    console.log(respBody);
 
     document.getElementById("search").value = lastSearch;
     document.getElementById('submitSearch').click();

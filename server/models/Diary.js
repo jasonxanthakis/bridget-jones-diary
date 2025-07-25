@@ -21,6 +21,16 @@ class Entry {
     return response.rows.map(g => new Entry(g));
   }
 
+  static async getAllCategories() {
+    const response = await db.query("SELECT DISTINCT(category) FROM entries;");
+
+    if (response.rows.length === 0) {
+      throw new Error("No entries found.");
+    }
+
+    return response.rows;
+  }
+
   static async getOneById(id) {
     const response = await db.query("SELECT * FROM entries WHERE id = $1;", [id]);
 

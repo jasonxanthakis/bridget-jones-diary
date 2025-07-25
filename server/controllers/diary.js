@@ -5,7 +5,16 @@ async function index(req, res) {
     const entries = await Entry.getAll();
     res.status(200).json(entries);
   } catch (err) {
-    res.status(500).json({ "error": err.message })
+    res.status(500).json({ "error": err.message });
+  }
+}
+
+async function listCat(req, res) {
+  try {
+    const entries = await Entry.getAllCategories();
+    res.status(200).json(entries);
+  } catch (err) {
+    res.status(500).json({ "error": err.message });
   }
 }
 
@@ -81,4 +90,4 @@ async function destroy(req, res) {
 }
 
 
-module.exports = { index, show, titles, categories, dates, create, update, destroy }
+module.exports = { index, show, titles, listCat, categories, dates, create, update, destroy }
